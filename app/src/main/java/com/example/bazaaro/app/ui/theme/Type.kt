@@ -1,4 +1,4 @@
-package com.example.bazaaro.ui.theme
+package com.example.bazaaro.app.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package com.example.bazaaro.ui.theme
+package com.example.bazaaro.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
