@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.example.bazaaro.app.DETAIL_SCREEN_ROUTE
 import com.example.bazaaro.app.ui.components.ErrorView
 import com.example.bazaaro.app.ui.components.LoadingView
 import com.example.bazaaro.app.ui.components.ProductCard
@@ -30,7 +31,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel(), navController: Na
 
         HomeState.Loading -> LoadingView()
         is HomeState.Success -> MainView(state.productList) {
-
+            navController.navigate("$DETAIL_SCREEN_ROUTE/$it")
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.bazaaro.app
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem

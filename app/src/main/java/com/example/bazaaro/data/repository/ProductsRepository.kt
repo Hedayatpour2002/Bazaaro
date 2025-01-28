@@ -17,4 +17,13 @@ class ProductsRepository @Inject constructor(
         }
     }
 
+    suspend fun getSingleProduct(productId: Int): Result<Product?> {
+        return try {
+            val response = apiService.getSingleProduct(productId = productId).body()
+            Result.success(response)
+        } catch (err: Exception) {
+            Result.failure(err)
+        }
+    }
+
 }
