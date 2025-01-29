@@ -1,6 +1,5 @@
 package com.example.bazaaro.presentation.cart
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,9 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -48,6 +45,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.bazaaro.R
 import com.example.bazaaro.app.DETAIL_SCREEN_ROUTE
 import com.example.bazaaro.app.ui.components.AlertDialogView
+import com.example.bazaaro.app.ui.components.DashedDivider
 import com.example.bazaaro.app.ui.components.ErrorView
 import com.example.bazaaro.app.ui.components.LoadingView
 import com.example.bazaaro.app.ui.components.ProductQuantitySectionView
@@ -271,21 +269,8 @@ fun PaymentSummaryView(products: List<CartEntity>) {
                 text = "$${0}", color = Color(0xFF838383), fontSize = 14.sp
             )
         }
-        Canvas(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-        ) {
-            val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-            drawLine(
-                color = Color.LightGray,
-                start = Offset(0f, size.height / 2),
-                end = Offset(size.width, size.height / 2),
-                strokeWidth = 4f,
-                pathEffect = pathEffect
-            )
-        }
 
+        DashedDivider()
 
         Row(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween

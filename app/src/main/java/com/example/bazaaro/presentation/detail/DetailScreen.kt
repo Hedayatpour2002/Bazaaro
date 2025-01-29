@@ -17,7 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
@@ -47,6 +47,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.bazaaro.app.ui.components.Accordion
+import com.example.bazaaro.app.ui.components.AccordionView
 import com.example.bazaaro.app.ui.components.ErrorView
 import com.example.bazaaro.app.ui.components.LoadingView
 import com.example.bazaaro.app.ui.components.ProductQuantitySectionView
@@ -150,7 +152,10 @@ private fun DetailView(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = backClickHandler) {
-                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back")
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                        contentDescription = "back"
+                    )
                 }
                 Text(text = "Product Detail", fontSize = 20.sp, color = Color(0xFF222222))
                 IconButton(onClick = { isLiked = !isLiked }) {
@@ -198,7 +203,7 @@ private fun DetailView(
                 Text(text = product.description, fontSize = 12.sp, color = Color(0xFF838383))
 
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Box() {
+                    Box {
                         TextButton(modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp),
                             shape = RoundedCornerShape(100),
                             border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
@@ -224,7 +229,7 @@ private fun DetailView(
                             }, onClick = { selectedSize = "20"; expanded = false })
                         }
                     }
-                    Box() {
+                    Box {
                         TextButton(modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp),
                             shape = RoundedCornerShape(100),
                             border = BorderStroke(1.dp, Color(0xFFE6E6E6)),
@@ -252,6 +257,27 @@ private fun DetailView(
                         }
                     }
                 }
+
+                AccordionView(
+                    accordionItems = listOf(
+                        Accordion(title = {
+                            Text(text = "Item details")
+                        }, desc = {
+                            Text(text = "This product is crafted with high-quality materials and attention to detail, ensuring durability and style.")
+                        }),
+                        Accordion(title = {
+                            Text(text = "Shipping info")
+                        }, desc = {
+                            Text(text = "Orders are processed within 24 hours and typically delivered within 3-5 business days.")
+                        }),
+                        Accordion(title = {
+                            Text(text = "Support")
+                        }, desc = {
+                            Text(text = "For any inquiries, our support team is available 24/7 via email or live chat.")
+                        }),
+                    )
+                )
+
 
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text(text = "Shipping & Returns")
