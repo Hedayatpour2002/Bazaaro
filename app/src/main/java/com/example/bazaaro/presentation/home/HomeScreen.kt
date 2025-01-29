@@ -63,7 +63,7 @@ private fun MainView(
                         horizontalArrangement = Arrangement.SpaceAround,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        it.forEach() { product ->
+                        it.forEach { product ->
                             ProductCard(
                                 product.id,
                                 product.title,
