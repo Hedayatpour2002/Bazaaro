@@ -1,9 +1,12 @@
 package com.example.bazaaro.app.di
 
 import android.content.Context
+import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.bazaaro.data.ApiService
 import com.example.bazaaro.data.BASE_URL
+import com.example.bazaaro.data.database.CartDao
+import com.example.bazaaro.data.database.CartDatabase
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -43,5 +46,20 @@ object AppModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): CartDatabase {
+        return Room.databaseBuilder(
+            context,
+            CartDatabase::class.java,
+            "cart_database"
+        ).build()
+    }
+
+    @Provides
+    fun provideProductDao(database: CartDatabase): CartDao {
+        return database.cartDao()
     }
 }

@@ -1,6 +1,5 @@
 package com.example.bazaaro.app
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -25,7 +24,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
-    NavigationBar() {
+    NavigationBar {
         val items = TopLevelDestinations.entries
         items.forEach {
             val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(it.icon))

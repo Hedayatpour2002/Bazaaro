@@ -26,8 +26,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -44,6 +43,10 @@ android {
 }
 
 dependencies {
+    //room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     //navigation
     implementation(libs.androidx.navigation.runtime.ktx)
@@ -78,7 +81,7 @@ dependencies {
     // coil
     implementation(libs.coil.compose)
 
-
+    // lottie
     implementation(libs.lottie.compose)
 
 

@@ -54,8 +54,8 @@ import kotlin.math.roundToInt
 @Composable
 fun DetailScreen(
     detailViewModel: DetailViewModel = hiltViewModel(),
-
-    navController: NavHostController, productId: Int
+    navController: NavHostController,
+    productId: Int
 ) {
     val detailState = detailViewModel.detailState.collectAsStateWithLifecycle()
 
@@ -65,27 +65,37 @@ fun DetailScreen(
         }
 
         DetailState.Loading -> LoadingView()
-        is DetailState.Success -> MainView(state.product, backClickHandler = {
+        is DetailState.Success -> MainView(state.product, onAddToCartHandler = {
+            detailViewModel.addToCart(state.product!!)
+        }, backClickHandler = {
             navController.navigateUp()
         }) {
             detailViewModel.getSingleProduct()
+
         }
     }
 }
 
 @Composable
-private fun MainView(product: Product?, backClickHandler: () -> Unit, errorHandler: () -> Unit) {
+private fun MainView(
+    product: Product?,
+    onAddToCartHandler: () -> Unit,
+    backClickHandler: () -> Unit,
+    errorHandler: () -> Unit
+) {
     if (product == null) {
         ErrorView(errorMessage = null) {
             errorHandler()
         }
     } else {
-        DetailView(product, backClickHandler)
+        DetailView(product, onAddToCartHandler, backClickHandler)
     }
 }
 
 @Composable
-private fun DetailView(product: Product, backClickHandler: () -> Unit) {
+private fun DetailView(
+    product: Product, onAddToCartHandler: () -> Unit, backClickHandler: () -> Unit
+) {
     var isLiked by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
     var expandedColor by remember { mutableStateOf(false) }
@@ -225,14 +235,16 @@ private fun DetailView(product: Product, backClickHandler: () -> Unit) {
 
         }
 
-        Button(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 4.dp),
+        Button(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 4.dp),
             shape = RoundedCornerShape(100),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFFDB3022), contentColor = Color.White
             ),
-            onClick = {}) {
+            onClick = onAddToCartHandler
+        ) {
             Text(text = "Add to Cart")
         }
     }
