@@ -1,5 +1,6 @@
 package com.example.bazaaro.presentation.detail
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,6 +49,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.bazaaro.app.ui.components.ErrorView
 import com.example.bazaaro.app.ui.components.LoadingView
+import com.example.bazaaro.app.ui.components.ProductQuantitySectionView
 import com.example.bazaaro.data.model.Product
 import com.example.bazaaro.data.model.Rating
 import kotlin.math.roundToInt
@@ -58,6 +61,7 @@ fun DetailScreen(
     productId: Int
 ) {
     val detailState = detailViewModel.detailState.collectAsStateWithLifecycle()
+    val quantity = detailViewModel.itemQuantity.collectAsStateWithLifecycle()
 
     when (val state = detailState.value) {
         is DetailState.Error -> ErrorView(state.errorMessage) {
@@ -65,11 +69,22 @@ fun DetailScreen(
         }
 
         DetailState.Loading -> LoadingView()
-        is DetailState.Success -> MainView(state.product, onAddToCartHandler = {
-            detailViewModel.addToCart(state.product!!)
-        }, backClickHandler = {
-            navController.navigateUp()
-        }) {
+        is DetailState.Success -> MainView(state.product,
+            quantity = quantity.value ?: 0,
+            addOrIncrementProduct = {
+                detailViewModel.addOrIncrementProduct(state.product!!)
+            },
+            removeOrDecrementProduct = {
+                detailViewModel.removeOrDecrementProduct(
+                    product = state.product!!
+                )
+            },
+            removeFromCart = {
+                detailViewModel.removeFromCart(state.product!!)
+            },
+            backClickHandler = {
+                navController.navigateUp()
+            }) {
             detailViewModel.getSingleProduct()
 
         }
@@ -79,7 +94,10 @@ fun DetailScreen(
 @Composable
 private fun MainView(
     product: Product?,
-    onAddToCartHandler: () -> Unit,
+    quantity: Int,
+    addOrIncrementProduct: () -> Unit,
+    removeOrDecrementProduct: () -> Unit,
+    removeFromCart: () -> Unit,
     backClickHandler: () -> Unit,
     errorHandler: () -> Unit
 ) {
@@ -88,13 +106,25 @@ private fun MainView(
             errorHandler()
         }
     } else {
-        DetailView(product, onAddToCartHandler, backClickHandler)
+        DetailView(
+            product,
+            quantity,
+            addOrIncrementProduct,
+            removeOrDecrementProduct,
+            removeFromCart = removeFromCart,
+            backClickHandler
+        )
     }
 }
 
 @Composable
 private fun DetailView(
-    product: Product, onAddToCartHandler: () -> Unit, backClickHandler: () -> Unit
+    product: Product,
+    quantity: Int,
+    addOrIncrementProduct: () -> Unit,
+    removeOrDecrementProduct: () -> Unit,
+    removeFromCart: () -> Unit,
+    backClickHandler: () -> Unit
 ) {
     var isLiked by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
@@ -235,20 +265,40 @@ private fun DetailView(
 
         }
 
-        Button(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 4.dp),
-            shape = RoundedCornerShape(100),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFDB3022), contentColor = Color.White
-            ),
-            onClick = onAddToCartHandler
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Add to Cart")
+            AnimatedVisibility(
+                visible = quantity > 0,
+            ) {
+                Row(modifier = Modifier.padding(horizontal = 8.dp)) {
+                    ProductQuantitySectionView(
+                        quantity = quantity,
+                        onIncrement = addOrIncrementProduct,
+                        onDecrement = removeOrDecrementProduct
+                    )
+                }
+            }
+            Button(
+                onClick = {
+                    if (quantity > 0) removeFromCart() else addOrIncrementProduct()
+                }, modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFDB3022), contentColor = Color.White
+                )
+            ) {
+                Text(
+                    text = if (quantity > 0) "Remove from cart" else "Add to Cart",
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
         }
     }
-
 }
 
 @Composable

@@ -38,9 +38,9 @@ class CartRepository @Inject constructor(
         }
     }
 
-//    fun getItemQuantity(productId: Int): Flow<Int?> {
-//        return cartDao.getProductQuantityById(productId)
-//    }
+    fun getItemQuantity(productId: Int): Flow<Int?> {
+        return cartDao.getProductQuantityById(productId)
+    }
 
     fun getAllProducts(): Flow<List<CartEntity>> {
         return try {

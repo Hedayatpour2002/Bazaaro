@@ -299,18 +299,22 @@ fun PaymentSummaryView(products: List<CartEntity>) {
         }
 
         Button(
-            onClick = {},
+            onClick = {
+//                TODO()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFDB3022))
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFDB3022), contentColor = Color.White
+            )
         ) {
             Text(
                 text = "Checkout",
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                modifier = Modifier.padding(vertical = 16.dp)
+                modifier = Modifier.padding(vertical = 8.dp)
             )
         }
     }

@@ -10,8 +10,11 @@ import com.example.bazaaro.data.repository.ProductsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,6 +28,11 @@ class DetailViewModel @Inject constructor(
 
     private val _detailState: MutableStateFlow<DetailState> = MutableStateFlow(DetailState.Loading)
     var detailState: StateFlow<DetailState> = _detailState.asStateFlow()
+
+    val itemQuantity: StateFlow<Int?> = cartRepository.getItemQuantity(productId)
+        .catch {
+            it.printStackTrace()
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), 0)
 
     init {
         getSingleProduct()
@@ -41,7 +49,7 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun addToCart(product: Product) {
+    fun addOrIncrementProduct(product: Product) {
         viewModelScope.launch {
             val cartEntity = CartEntity(
                 id = product.id,
@@ -56,9 +64,15 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun removeFromCart(product: Product) {
+    fun removeOrDecrementProduct(product: Product) {
         viewModelScope.launch {
             cartRepository.removeOrDecrementProduct(product.id)
+        }
+    }
+
+    fun removeFromCart(product: Product) {
+        viewModelScope.launch {
+            cartRepository.removeFromCart(product.id)
         }
     }
 }
