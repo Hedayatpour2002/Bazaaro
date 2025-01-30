@@ -42,11 +42,11 @@ import com.example.bazaaro.app.ui.components.AlertDialogView
 
 @Composable
 fun ProfileScreen(navController: NavHostController) {
-    MainView()
+    MainView(navController = navController)
 }
 
 @Composable
-fun MainView() {
+fun MainView(navController: NavHostController) {
 
     val openAlertDialog = remember { mutableStateOf(false) }
 
@@ -107,7 +107,9 @@ fun MainView() {
                 .padding(horizontal = 8.dp)
         ) {
             // item 1
-            TextButton(onClick = {}) {
+            TextButton(onClick = {
+                navController.navigate("personal-information")
+            }) {
                 Icon(Icons.Outlined.Person, contentDescription = null, tint = Color(0xFF838383))
                 VerticalDivider(
                     modifier = Modifier
@@ -150,7 +152,9 @@ fun MainView() {
 
             // item 3
             Spacer(modifier = Modifier.height(8.dp))
-            TextButton(onClick = {}) {
+            TextButton(onClick = {
+                navController.navigate("order")
+            }) {
                 Icon(Icons.Outlined.DateRange, contentDescription = null, tint = Color(0xFF838383))
                 VerticalDivider(
                     modifier = Modifier
@@ -165,7 +169,9 @@ fun MainView() {
 
             // item 4
             Spacer(modifier = Modifier.height(8.dp))
-            TextButton(onClick = {}) {
+            TextButton(onClick = {
+                navController.navigate("favorite")
+            }) {
                 Icon(
                     Icons.Outlined.FavoriteBorder,
                     contentDescription = null,
@@ -184,7 +190,9 @@ fun MainView() {
 
             // item 5
             Spacer(modifier = Modifier.height(8.dp))
-            TextButton(onClick = {}) {
+            TextButton(onClick = {
+                navController.navigate("address")
+            }) {
                 Icon(Icons.Outlined.LocationOn, contentDescription = null, tint = Color(0xFF838383))
                 VerticalDivider(
                     modifier = Modifier
@@ -218,13 +226,5 @@ fun MainView() {
             }
             Spacer(modifier = Modifier.height(8.dp))
         }
-
     }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MainViewPrev() {
-    MainView()
 }
