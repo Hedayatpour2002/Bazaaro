@@ -3,12 +3,14 @@ package com.example.bazaaro.presentation.cart
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -17,8 +19,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -34,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -64,6 +70,8 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel(), navController: Na
             cartViewModel.removeOrDecrementProduct(it)
         }, removeAllFromCart = {
             cartViewModel.removeAllFromCart()
+        }, removeFromCart = {
+            cartViewModel.removeFromCart(it)
         }) { clickedItemId ->
             navController.navigate("$DETAIL_SCREEN_ROUTE/$clickedItemId")
         }
@@ -105,6 +113,7 @@ fun CartView(
     onIncrement: (CartEntity) -> Unit,
     onDecrement: (CartEntity) -> Unit,
     removeAllFromCart: () -> Unit,
+    removeFromCart: (CartEntity) -> Unit,
     onItemClick: (Int) -> Unit,
 ) {
     val openAlertDialog = remember { mutableStateOf(false) }
@@ -159,7 +168,9 @@ fun CartView(
         }
 
         items(products) {
-            CartProductView(it, onItemClick, onIncrement, onDecrement)
+            CartProductView(it, onItemClick, onIncrement, onDecrement) {
+                removeFromCart(it)
+            }
         }
 
         item {
@@ -173,61 +184,84 @@ fun CartProductView(
     product: CartEntity,
     onItemClick: (Int) -> Unit,
     onIncrement: (CartEntity) -> Unit,
-    onDecrement: (CartEntity) -> Unit
+    onDecrement: (CartEntity) -> Unit,
+    removeFromCart: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(12.dp))
-            .background(color = Color(0xFFF4F4F4)),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    Box(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        AsyncImage(model = product.image,
-            contentDescription = product.title,
-            contentScale = ContentScale.FillHeight,
+        IconButton(
+            onClick = removeFromCart,
             modifier = Modifier
-                .size(100.dp)
-                .clip(
-                    RoundedCornerShape(4.dp)
-                )
-                .padding(vertical = 18.dp, horizontal = 8.dp)
-                .clickable { onItemClick(product.id) })
-
-        Column(
-            verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .padding(top = 18.dp, bottom = 18.dp, end = 8.dp)
-                .fillMaxWidth()
+                .offset(x = 0.dp, y = 0.dp)
+                .align(Alignment.TopStart)
+                .clip(RoundedCornerShape(topStart = 12.dp, bottomEnd = 12.dp))
+                .size(32.dp)
+                .zIndex(1f)
+                .background(Color.Black)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+            Icon(
+                imageVector = Icons.Rounded.Delete,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape = RoundedCornerShape(12.dp))
+                .background(color = Color(0xFFF4F4F4)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            AsyncImage(model = product.image,
+                contentDescription = product.title,
+                contentScale = ContentScale.FillHeight,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(4.dp))
+                    .padding(vertical = 18.dp, horizontal = 8.dp)
+                    .clickable { onItemClick(product.id) })
+
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .padding(top = 18.dp, bottom = 18.dp, end = 8.dp)
+                    .fillMaxWidth()
             ) {
-                Text(product.title,
-                    modifier = Modifier
-                        .clickable { onItemClick(product.id) }
-                        .weight(1f),
-                    color = Color(0xFF272727),
-                    fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "$${"%.2f".format(product.price * product.quantity)}",
-                    color = Color(0xFFDB3022),
-                    fontWeight = FontWeight.ExtraBold,
-                )
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = product.category, fontSize = 14.sp, modifier = Modifier.weight(1f))
-                Spacer(modifier = Modifier.width(8.dp))
-                ProductQuantitySectionView(quantity = product.quantity,
-                    onIncrement = { onIncrement(product) },
-                    onDecrement = { onDecrement(product) })
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(product.title,
+                        modifier = Modifier
+                            .clickable { onItemClick(product.id) }
+                            .weight(1f),
+                        color = Color(0xFF272727),
+                        fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "$${"%.2f".format(product.price * product.quantity)}",
+                        color = Color(0xFFDB3022),
+                        fontWeight = FontWeight.ExtraBold,
+                    )
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = product.category, fontSize = 14.sp, modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    ProductQuantitySectionView(quantity = product.quantity,
+                        onIncrement = { onIncrement(product) },
+                        onDecrement = { onDecrement(product) })
+                }
             }
         }
     }
