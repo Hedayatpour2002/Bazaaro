@@ -7,5 +7,5 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun OrderScreen(navController: NavHostController) {
-    Text("PersonalInformationScreen")
+    Text("OrderScreen")
 }

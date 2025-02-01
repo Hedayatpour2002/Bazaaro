@@ -6,5 +6,5 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun AddressScreen(navController: NavHostController) {
-    Text("PersonalInformationScreen")
+    Text("AddressScreen")
 }

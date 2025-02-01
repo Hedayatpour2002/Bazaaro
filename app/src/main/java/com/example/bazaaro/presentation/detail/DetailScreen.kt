@@ -143,7 +143,6 @@ private fun DetailView(
     toggleFavorite: (FavoriteEntity) -> Unit,
     backClickHandler: () -> Unit
 ) {
-    var isLiked by remember { mutableStateOf(false) }
     var expanded by remember { mutableStateOf(false) }
     var expandedColor by remember { mutableStateOf(false) }
 
