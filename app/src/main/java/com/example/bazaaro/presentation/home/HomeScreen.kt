@@ -34,12 +34,16 @@ import com.example.bazaaro.app.DETAIL_SCREEN_ROUTE
 import com.example.bazaaro.app.ui.components.ErrorView
 import com.example.bazaaro.app.ui.components.LoadingView
 import com.example.bazaaro.app.ui.components.ProductCard
+import com.example.bazaaro.data.model.FavoriteEntity
 import com.example.bazaaro.data.model.Product
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel(), navController: NavHostController) {
+fun HomeScreen(
+    homeViewModel: HomeViewModel = hiltViewModel(), navController: NavHostController
+) {
 
     val homeState = homeViewModel.homeState.collectAsStateWithLifecycle()
+
 
     when (val state = homeState.value) {
         is HomeState.Error -> ErrorView(errorMessage = state.errorMessage, onClick = {
@@ -51,6 +55,13 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel(), navController: Na
             homeViewModel.getAllProducts()
         }, goToFavorite = {
             navController.navigate("favorite")
+        }, isFavorite = {
+            val isFavorite by homeViewModel.isFavorite(it)
+                .collectAsStateWithLifecycle(false)
+
+            isFavorite
+        }, toggleFavorite = {
+            homeViewModel.toggleFavorite(it)
         }) {
             navController.navigate("$DETAIL_SCREEN_ROUTE/$it")
         }
@@ -64,6 +75,8 @@ private fun MainView(
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit,
     goToFavorite: () -> Unit,
+    isFavorite: @Composable (Int) -> Boolean,
+    toggleFavorite: (FavoriteEntity) -> Unit,
     clickHandler: (Int) -> Unit
 ) {
 
@@ -120,6 +133,8 @@ private fun MainView(
                                 product.rating,
                                 product.price,
                                 product.category,
+                                isFavorite = isFavorite(product.id),
+                                toggleFavorite = toggleFavorite,
                                 clickHandler
                             )
                         }

@@ -5,8 +5,9 @@ import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.bazaaro.data.ApiService
 import com.example.bazaaro.data.BASE_URL
+import com.example.bazaaro.data.database.AppDatabase
 import com.example.bazaaro.data.database.CartDao
-import com.example.bazaaro.data.database.CartDatabase
+import com.example.bazaaro.data.database.FavoriteDao
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -50,16 +51,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): CartDatabase {
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
-            context,
-            CartDatabase::class.java,
-            "cart_database"
+            context, AppDatabase::class.java, "app_database"
         ).build()
     }
 
     @Provides
-    fun provideProductDao(database: CartDatabase): CartDao {
+    fun provideCartDao(database: AppDatabase): CartDao {
         return database.cartDao()
+    }
+
+    @Provides
+    fun provideFavoriteDao(database: AppDatabase): FavoriteDao {
+        return database.favoriteDao()
     }
 }

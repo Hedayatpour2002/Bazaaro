@@ -4,11 +4,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bazaaro.data.model.CartEntity
+import com.example.bazaaro.data.model.FavoriteEntity
 import com.example.bazaaro.data.model.Product
 import com.example.bazaaro.data.repository.CartRepository
+import com.example.bazaaro.data.repository.FavoriteRepository
 import com.example.bazaaro.data.repository.ProductsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +25,8 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val productsRepository: ProductsRepository,
-    private val cartRepository: CartRepository
+    private val cartRepository: CartRepository,
+    private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
     private val productId: Int = savedStateHandle["productId"] ?: 0
 
@@ -74,5 +78,15 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             cartRepository.removeFromCart(product.id)
         }
+    }
+
+    fun toggleFavorite(favoriteEntity: FavoriteEntity) {
+        viewModelScope.launch {
+            favoriteRepository.toggleFavorite(favoriteEntity)
+        }
+    }
+
+    fun isFavorite(id: Int): Flow<Boolean> {
+        return favoriteRepository.isFavorite(id)
     }
 }

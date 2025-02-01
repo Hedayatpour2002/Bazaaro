@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.bazaaro.data.model.FavoriteEntity
 import com.example.bazaaro.data.model.Rating
 
 
@@ -41,6 +42,8 @@ fun ProductCard(
     rating: Rating,
     price: Double,
     category: String,
+    isFavorite: Boolean,
+    toggleFavorite: (FavoriteEntity) -> Unit,
     clickHandler: (Int) -> Unit
 ) {
     Column(modifier = Modifier
@@ -63,7 +66,19 @@ fun ProductCard(
             )
 
             IconButton(
-                onClick = { },
+                onClick = {
+                    toggleFavorite(
+                        FavoriteEntity(
+                            id = id,
+                            image = image,
+                            price = price,
+                            title = title,
+                            ratingCount = rating.count,
+                            ratingRate = rating.rate,
+                            category = category,
+                        )
+                    )
+                },
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(14.dp)
@@ -76,7 +91,7 @@ fun ProductCard(
                     imageVector = Icons.Default.Favorite,
                     contentDescription = "heart",
                     modifier = Modifier.size(24.dp),
-                    tint = Color.White
+                    tint = if (isFavorite) Color(0xFFDB3022) else Color.White
                 )
             }
         }
@@ -97,7 +112,10 @@ fun ProductCard(
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.End) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
                 Icon(
                     imageVector = Icons.Filled.Star,
                     contentDescription = "star",

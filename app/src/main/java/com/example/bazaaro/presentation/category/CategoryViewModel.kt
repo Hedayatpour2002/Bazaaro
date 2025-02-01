@@ -2,10 +2,13 @@ package com.example.bazaaro.presentation.category
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.bazaaro.data.model.FavoriteEntity
 import com.example.bazaaro.data.model.Product
 import com.example.bazaaro.data.repository.CategoriesRepository
+import com.example.bazaaro.data.repository.FavoriteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
-    private val categoriesRepository: CategoriesRepository
+    private val categoriesRepository: CategoriesRepository,
+    private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
     private val _categoriesState: MutableStateFlow<CategoryState> =
         MutableStateFlow(CategoryState.Loading)
@@ -58,6 +62,15 @@ class CategoryViewModel @Inject constructor(
         getProductsByCategory()
     }
 
+    fun toggleFavorite(favoriteEntity: FavoriteEntity) {
+        viewModelScope.launch {
+            favoriteRepository.toggleFavorite(favoriteEntity)
+        }
+    }
+
+    fun isFavorite(id: Int): Flow<Boolean> {
+        return favoriteRepository.isFavorite(id)
+    }
 }
 
 sealed interface ProductState {

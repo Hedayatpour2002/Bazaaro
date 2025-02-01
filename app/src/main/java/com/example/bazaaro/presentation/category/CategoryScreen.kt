@@ -153,6 +153,9 @@ private fun ProductsSection(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         it.forEach { product ->
+                            val isFavorite by viewModel.isFavorite(product.id)
+                                .collectAsStateWithLifecycle(false)
+
                             ProductCard(
                                 product.id,
                                 product.title,
@@ -160,6 +163,10 @@ private fun ProductsSection(
                                 product.rating,
                                 product.price,
                                 product.category,
+                                isFavorite = isFavorite,
+                                toggleFavorite = {
+                                    viewModel.toggleFavorite(it)
+                                },
                                 onClickHandler
                             )
                         }

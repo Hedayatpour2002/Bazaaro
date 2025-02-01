@@ -52,6 +52,7 @@ import com.example.bazaaro.app.ui.components.AccordionView
 import com.example.bazaaro.app.ui.components.ErrorView
 import com.example.bazaaro.app.ui.components.LoadingView
 import com.example.bazaaro.app.ui.components.ProductQuantitySectionView
+import com.example.bazaaro.data.model.FavoriteEntity
 import com.example.bazaaro.data.model.Product
 import com.example.bazaaro.data.model.Rating
 import kotlin.math.roundToInt
@@ -86,6 +87,14 @@ fun DetailScreen(
             },
             backClickHandler = {
                 navController.navigateUp()
+            },
+            isFavorite = {
+                val isFavorite by detailViewModel.isFavorite(it).collectAsStateWithLifecycle(false)
+
+                isFavorite
+            },
+            toggleFavorite = {
+                detailViewModel.toggleFavorite(it)
             }) {
             detailViewModel.getSingleProduct()
 
@@ -101,6 +110,8 @@ private fun MainView(
     removeOrDecrementProduct: () -> Unit,
     removeFromCart: () -> Unit,
     backClickHandler: () -> Unit,
+    isFavorite: @Composable (Int) -> Boolean,
+    toggleFavorite: (FavoriteEntity) -> Unit,
     errorHandler: () -> Unit
 ) {
     if (product == null) {
@@ -114,6 +125,8 @@ private fun MainView(
             addOrIncrementProduct,
             removeOrDecrementProduct,
             removeFromCart = removeFromCart,
+            isFavorite = isFavorite,
+            toggleFavorite = toggleFavorite,
             backClickHandler
         )
     }
@@ -126,6 +139,8 @@ private fun DetailView(
     addOrIncrementProduct: () -> Unit,
     removeOrDecrementProduct: () -> Unit,
     removeFromCart: () -> Unit,
+    isFavorite: @Composable (Int) -> Boolean,
+    toggleFavorite: (FavoriteEntity) -> Unit,
     backClickHandler: () -> Unit
 ) {
     var isLiked by remember { mutableStateOf(false) }
@@ -158,11 +173,23 @@ private fun DetailView(
                     )
                 }
                 Text(text = "Product Detail", fontSize = 20.sp, color = Color(0xFF222222))
-                IconButton(onClick = { isLiked = !isLiked }) {
+                IconButton(onClick = {
+                    toggleFavorite(
+                        FavoriteEntity(
+                            id = product.id,
+                            image = product.image,
+                            price = product.price,
+                            title = product.title,
+                            ratingCount = product.rating.count,
+                            ratingRate = product.rating.rate,
+                            category = product.category,
+                        )
+                    )
+                }) {
                     Icon(
                         imageVector = Icons.Rounded.Favorite,
                         contentDescription = "like",
-                        tint = if (isLiked) Color(0xFFDB3022) else Color.Gray
+                        tint = if (isFavorite(product.id)) Color(0xFFDB3022) else Color.Gray
                     )
                 }
             }
