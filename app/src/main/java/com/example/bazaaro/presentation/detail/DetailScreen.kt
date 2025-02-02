@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,6 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.bazaaro.R
 import com.example.bazaaro.app.ui.components.Accordion
 import com.example.bazaaro.app.ui.components.AccordionView
 import com.example.bazaaro.app.ui.components.ErrorView
@@ -146,8 +148,11 @@ private fun DetailView(
     var expanded by remember { mutableStateOf(false) }
     var expandedColor by remember { mutableStateOf(false) }
 
-    var selectedSize by remember { mutableStateOf("Size") }
-    var selectedColor by remember { mutableStateOf("Color") }
+    var selectedSize by remember { mutableStateOf("") }
+    selectedSize = stringResource(R.string.size)
+
+    var selectedColor by remember { mutableStateOf("") }
+    selectedColor = stringResource(R.string.color)
 
 
     Column(
@@ -171,7 +176,11 @@ private fun DetailView(
                         contentDescription = "back"
                     )
                 }
-                Text(text = "Product Detail", fontSize = 20.sp, color = Color(0xFF222222))
+                Text(
+                    text = stringResource(R.string.productDetail),
+                    fontSize = 20.sp,
+                    color = Color(0xFF222222)
+                )
                 IconButton(onClick = {
                     toggleFavorite(
                         FavoriteEntity(
@@ -267,49 +276,54 @@ private fun DetailView(
                                 contentDescription = null
                             )
                         }
-                        DropdownMenu(expanded = expandedColor,
+                        DropdownMenu(
+                            expanded = expandedColor,
                             onDismissRequest = { expandedColor = false }) {
-                            DropdownMenuItem(text = {
-                                Text(text = "Red")
-                            }, onClick = { selectedColor = "Red"; expandedColor = false })
+                            val redText = stringResource(R.string.red)
+                            val blackText = stringResource(R.string.black)
+                            val whiteText = stringResource(R.string.white)
 
-                            DropdownMenuItem(text = {
-                                Text(text = "Black")
-                            }, onClick = { selectedColor = "Black"; expandedColor = false })
+                            DropdownMenuItem(text = { Text(text = redText) }, onClick = {
+                                selectedColor = redText
+                                expandedColor = false
+                            })
 
-                            DropdownMenuItem(text = {
-                                Text(text = "White")
-                            }, onClick = { selectedColor = "White"; expandedColor = false })
+                            DropdownMenuItem(text = { Text(text = blackText) }, onClick = {
+                                selectedColor = blackText
+                                expandedColor = false
+                            })
+
+                            DropdownMenuItem(text = { Text(text = whiteText) }, onClick = {
+                                selectedColor = whiteText
+                                expandedColor = false
+                            })
                         }
                     }
                 }
 
                 AccordionView(
-                    accordionItems = listOf(
-                        Accordion(title = {
-                            Text(text = "Item details")
-                        }, desc = {
-                            Text(text = "This product is crafted with high-quality materials and attention to detail, ensuring durability and style.")
-                        }),
-                        Accordion(title = {
-                            Text(text = "Shipping info")
-                        }, desc = {
-                            Text(text = "Orders are processed within 24 hours and typically delivered within 3-5 business days.")
-                        }),
-                        Accordion(title = {
-                            Text(text = "Support")
-                        }, desc = {
-                            Text(text = "For any inquiries, our support team is available 24/7 via email or live chat.")
-                        }),
+                    accordionItems = listOf(Accordion(title = {
+                        Text(
+                            text = stringResource(
+                                R.string.accordion_item_details_title
+                            )
+                        )
+                    },
+                        desc = { Text(text = stringResource(R.string.accordion_item_details_desc)) }),
+                        Accordion(title = { Text(text = stringResource(R.string.accordion_shipping_info_title)) },
+                            desc = { Text(text = stringResource(R.string.accordion_shipping_info_desc)) }),
+                        Accordion(title = { Text(text = stringResource(R.string.accordion_support_title)) },
+                            desc = { Text(text = stringResource(R.string.accordion_support_desc)) })
                     )
                 )
 
 
+
                 Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(text = "Shipping & Returns")
+                    Text(text = stringResource(R.string.shipping_returns_title))
 
                     Text(
-                        text = "Free standard shipping and free 60-day returns",
+                        text = stringResource(R.string.shipping_returns_desc),
                         color = Color(0xFF838383)
                     )
                 }
@@ -342,12 +356,14 @@ private fun DetailView(
                 )
             ) {
                 Text(
-                    text = if (quantity > 0) "Remove from cart" else "Add to Cart",
+                    text = if (quantity > 0) stringResource(R.string.remove_from_cart)
+                    else stringResource(R.string.add_to_cart),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
+
             }
         }
     }

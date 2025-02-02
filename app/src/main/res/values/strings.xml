@@ -17,6 +17,20 @@
     <string name="removeAll">Remove All</string>
     <string name="favoriteListIsEmpty">Favorite list is empty!</string>
     <string name="goToHome">Go to home</string>
-    <string name=""></string>
-    <string name=""></string>
+    <string name="size">Size</string>
+    <string name="color">Color</string>
+    <string name="productDetail">Product Detail</string>
+    <string name="red">Red</string>
+    <string name="black">Black</string>
+    <string name="white">White</string>
+    <string name="accordion_item_details_title">Item details</string>
+    <string name="accordion_item_details_desc">This product is crafted with high-quality materials and attention to detail, ensuring durability and style.</string>
+    <string name="accordion_shipping_info_title">Shipping info</string>
+    <string name="accordion_shipping_info_desc">Orders are processed within 24 hours and typically delivered within 3–5 business days.</string>
+    <string name="accordion_support_title">Support</string>
+    <string name="accordion_support_desc">For any inquiries, our support team is available 24/7 via email or live chat.</string>
+    <string name="shipping_returns_title">Shipping &amp; Returns</string>
+    <string name="shipping_returns_desc">Free standard shipping and free 60-day returns</string>
+    <string name="remove_from_cart">Remove from cart</string>
+    <string name="add_to_cart">Add to cart</string>
 </resources>
