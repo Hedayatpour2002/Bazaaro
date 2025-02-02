@@ -1,5 +1,6 @@
 package com.example.bazaaro.app
 
+import android.content.Context
 import androidx.annotation.RawRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -49,14 +50,18 @@ fun NavigationHost(navController: NavHostController, modifier: Modifier) {
     }
 }
 
-enum class TopLevelDestinations(val route: String, val title: String, @RawRes val icon: Int) {
-    HOME(route = "home", title = "Home", icon = R.raw.ic_home), CATEGORY(
-        route = "category", title = "Category", icon = R.raw.ic_category
-    ),
-    CART(
-        route = "cart", title = "Cart", icon = R.raw.ic_cart
-    ),
-    PROFILE(
-        route = "profile", title = "Profile", icon = R.raw.ic_profile
-    )
+enum class TopLevelDestinations(val route: String, @RawRes val icon: Int) {
+    HOME(route = "home", icon = R.raw.ic_home),
+    CATEGORY(route = "category", icon = R.raw.ic_category),
+    CART(route = "cart", icon = R.raw.ic_cart),
+    PROFILE(route = "profile", icon = R.raw.ic_profile);
+
+    fun getTitle(context: Context): String {
+        return when (this) {
+            HOME -> context.getString(R.string.home)
+            CATEGORY -> context.getString(R.string.category)
+            CART -> context.getString(R.string.cart)
+            PROFILE -> context.getString(R.string.profile)
+        }
+    }
 }

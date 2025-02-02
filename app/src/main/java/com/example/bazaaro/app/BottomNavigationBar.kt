@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -26,6 +27,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 fun BottomNavigationBar(navController: NavHostController) {
     NavigationBar {
         val items = TopLevelDestinations.entries
+        val context = LocalContext.current
         items.forEach {
             val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(it.icon))
             var isPlaying by remember { mutableStateOf(true) }
@@ -50,7 +52,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                         modifier = Modifier.size(28.dp)
                     )
                 },
-                label = { Text(it.title, fontWeight = FontWeight.ExtraBold) },
+                label = { Text(it.getTitle(context = context), fontWeight = FontWeight.ExtraBold) },
 
                 selected = navController.currentBackStackEntryAsState().value?.destination?.route == it.route,
                 onClick = {

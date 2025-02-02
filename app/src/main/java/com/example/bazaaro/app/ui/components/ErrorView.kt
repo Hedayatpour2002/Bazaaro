@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,11 +42,13 @@ fun ErrorView(errorMessage: String?, onClick: () -> Unit) {
                 .aspectRatio(1f)
                 .height(400.dp)
         )
-        Text(errorMessage ?: "An error has occurred.")
+        Text(errorMessage ?: stringResource(R.string.error_message_default))
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = onClick) {
             Text(
-                text = "Try again", textAlign = TextAlign.Center, fontWeight = FontWeight.ExtraBold
+                text = stringResource(R.string.try_again),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.ExtraBold
             )
         }
     }
