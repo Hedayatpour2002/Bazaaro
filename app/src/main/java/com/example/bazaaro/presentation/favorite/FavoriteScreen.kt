@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -69,7 +70,11 @@ fun FavoriteScreen(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "back"
                 )
             }
-            Text(text = "Favorites", fontSize = 20.sp, color = Color(0xFF222222))
+            Text(
+                text = stringResource(R.string.favorites),
+                fontSize = 20.sp,
+                color = Color(0xFF222222)
+            )
 
             IconButton(onClick = {
                 navController.navigate("cart")
@@ -116,15 +121,15 @@ fun MainView(
 
     if (openAlertDialog.value) {
         AlertDialogView(
-            onDismissRequestText = "Cancel",
+            onDismissRequestText = stringResource(R.string.cancel),
             onDismissRequest = { openAlertDialog.value = false },
-            onConfirmationText = "Confirm",
+            onConfirmationText = stringResource(R.string.confirm),
             onConfirmation = {
                 removeAllFavorites()
                 openAlertDialog.value = false
             },
-            dialogTitle = "Remove all items?",
-            dialogText = "Are you sure you want to clear your favorites list?",
+            dialogTitle = stringResource(R.string.removeDialogTitle),
+            dialogText = stringResource(R.string.removeFavoriteDialogText),
             icon = Icons.Default.Delete
         )
     }
@@ -136,7 +141,7 @@ fun MainView(
                     openAlertDialog.value = true
                 }) {
                     Text(
-                        text = "Remove All",
+                        text = stringResource(R.string.removeAll),
                         textAlign = TextAlign.End,
                         color = Color(0xFF838383),
                     )
@@ -186,12 +191,16 @@ fun EmptyListView(goToHome: () -> Unit) {
             modifier = Modifier.size(400.dp)
         )
         Spacer(Modifier.height(8.dp))
-        Text(text = "Favorite list is empty!", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
+        Text(
+            text = stringResource(R.string.favoriteListIsEmpty),
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 20.sp
+        )
         Spacer(Modifier.height(8.dp))
         ElevatedButton(
             onClick = goToHome
         ) {
-            Text("Go to home")
+            Text(text = stringResource(R.string.goToHome))
         }
     }
 }

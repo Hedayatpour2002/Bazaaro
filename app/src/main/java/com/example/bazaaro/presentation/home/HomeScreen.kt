@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -56,8 +57,7 @@ fun HomeScreen(
         }, goToFavorite = {
             navController.navigate("favorite")
         }, isFavorite = {
-            val isFavorite by homeViewModel.isFavorite(it)
-                .collectAsStateWithLifecycle(false)
+            val isFavorite by homeViewModel.isFavorite(it).collectAsStateWithLifecycle(false)
 
             isFavorite
         }, toggleFavorite = {
@@ -81,7 +81,7 @@ private fun MainView(
 ) {
 
     if (productList.isEmpty()) {
-        Text(text = "Nothing to show")
+        Text(text = stringResource(R.string.nothingToShow))
     } else {
 
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.favorite))

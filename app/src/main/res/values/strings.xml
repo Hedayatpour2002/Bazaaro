@@ -9,5 +9,14 @@
     <string name="profile">Profile</string>
     <string name="cancel">Cancel</string>
     <string name="logOutDialogText">Are you sure you want to log out? You will need to sign in again to access your account.</string>
-
+    <string name="nothingToShow">Nothing to show</string>
+    <string name="favorites">Favorites</string>
+    <string name="confirm">Confirm</string>
+    <string name="removeDialogTitle">Remove all items?</string>
+    <string name="removeFavoriteDialogText">Are you sure you want to clear your favorites list?</string>
+    <string name="removeAll">Remove All</string>
+    <string name="favoriteListIsEmpty">Favorite list is empty!</string>
+    <string name="goToHome">Go to home</string>
+    <string name=""></string>
+    <string name=""></string>
 </resources>
