@@ -16,7 +16,7 @@ Bazaaro is an e-commerce Android application built using modern Android developm
 
 | Home Screen | Product Details | Cart Management |  
 |-------------|-----------------|-----------------|  
-| <img src="" width="200"> | <img src="" width="200"> | <img src="" width="200"> |  
+| <img src="HomeScreen.png" width="200"> | <img src="ProductDetails.png" width="200"> | <img src="Cart.png" width="200"> |  
 
 ---
 
