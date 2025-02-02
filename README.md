@@ -1,7 +1,5 @@
 # Bazaaro 🛍️ - E-commerce Android Application
 
----
-
 <div align="center">
   <img src="https://img.icons8.com/color/96/shopping-bag.png" alt="Logo"/>
   <br>
