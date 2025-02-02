@@ -104,10 +104,13 @@ git push origin feature/amazing-feature
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-Acknowledgments  
+---
+
+## 💡 Acknowledgments  
 - [Fake Store API](https://fakestoreapi.com/) for mock data  
 - Android Developer Community for best practices  
 - JetBrains for Kotlin language support  
+
 ---
 
 Thank you for checking out Bazaaro! If you have any questions or feedback, feel free to reach out. Happy coding! 🚀
