@@ -58,7 +58,7 @@ The project is structured into several packages:
 
 ---
 
-## Getting Started
+## 🚀 Getting Started  
 
 To get started with the project, follow these steps:
 
