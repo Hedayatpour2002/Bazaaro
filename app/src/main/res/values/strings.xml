@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Bazaaro</string>
+    <string name="personalInformation">Personal information</string>
+    <string name="language">Language</string>
+    <string name="orderHistory">Order history</string>
+    <string name="myFavorites">My favorites</string>
+    <string name="myAddress">My address</string>
+    <string name="logOut">Log out</string>
+    <string name="profile">Profile</string>
+    <string name="cancel">Cancel</string>
+    <string name="logOutDialogText">Are you sure you want to log out? You will need to sign in again to access your account.</string>
+
 </resources>

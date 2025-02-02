@@ -27,9 +27,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -52,14 +52,14 @@ fun MainView(navController: NavHostController) {
 
     if (openAlertDialog.value) {
         AlertDialogView(
-            onDismissRequestText = "Cancel",
+            onDismissRequestText = stringResource(R.string.cancel),
             onDismissRequest = { openAlertDialog.value = false },
-            onConfirmationText = "Log out",
+            onConfirmationText = stringResource(R.string.logOut),
             onConfirmation = {
                 openAlertDialog.value = false
             },
-            dialogTitle = "Log Out",
-            dialogText = "Are you sure you want to log out? You will need to sign in again to access your account.",
+            dialogTitle = stringResource(R.string.logOut),
+            dialogText = stringResource(R.string.logOutDialogText),
             icon = ImageVector.vectorResource(id = R.drawable.ic_logout)
         )
     }
@@ -71,7 +71,7 @@ fun MainView(navController: NavHostController) {
     ) {
 
         Text(
-            text = "Profile",
+            text = stringResource(R.string.profile),
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
             color = Color(0xFF222222),
@@ -117,7 +117,7 @@ fun MainView(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
                 Text(
-                    text = "Personal information",
+                    text = stringResource(R.string.personalInformation),
                     color = Color.Black,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -141,7 +141,7 @@ fun MainView(navController: NavHostController) {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Language",
+                        text = stringResource(R.string.language),
                         color = Color.Black,
                     )
                     Text(text = "English (US)", color = Color(0xFF838383))
@@ -162,7 +162,9 @@ fun MainView(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
                 Text(
-                    text = "Order history", color = Color.Black, modifier = Modifier.fillMaxWidth()
+                    text = stringResource(R.string.orderHistory),
+                    color = Color.Black,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -183,7 +185,9 @@ fun MainView(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
                 Text(
-                    text = "My favorites", color = Color.Black, modifier = Modifier.fillMaxWidth()
+                    text = stringResource(R.string.myFavorites),
+                    color = Color.Black,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -200,7 +204,9 @@ fun MainView(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
                 Text(
-                    text = "My address", color = Color.Black, modifier = Modifier.fillMaxWidth()
+                    text = stringResource(R.string.myAddress),
+                    color = Color.Black,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -221,7 +227,9 @@ fun MainView(navController: NavHostController) {
                         .padding(horizontal = 16.dp)
                 )
                 Text(
-                    text = "Log out", color = Color(0xFFDC1010), modifier = Modifier.fillMaxWidth()
+                    text = stringResource(R.string.logOut),
+                    color = Color(0xFFDC1010),
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
