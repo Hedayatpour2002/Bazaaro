@@ -27,12 +27,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.example.bazaaro.R
 import com.example.bazaaro.app.DETAIL_SCREEN_ROUTE
 import com.example.bazaaro.app.ui.components.ErrorView
 import com.example.bazaaro.app.ui.components.LoadingView
@@ -180,6 +182,6 @@ private fun ProductsSection(
 
 @Composable
 fun EmptyView() {
-    Text("Empty")
+    Text(text = stringResource(R.string.empty))
 }
 

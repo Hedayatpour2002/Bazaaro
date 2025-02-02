@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -89,22 +90,24 @@ fun EmptyListView() {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.cart_is_empty))
 
     Text(
-        text = "Cart",
+        text = stringResource(R.string.cart),
         fontSize = 20.sp,
         textAlign = TextAlign.Center,
         color = Color(0xFF222222),
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 24.dp, top = 8.dp)
-
     )
     Column(
         modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LottieAnimation(composition = composition, iterations = LottieConstants.IterateForever)
-        Text(text = "Cart is empty!", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
+        Text(
+            text = stringResource(R.string.cart_empty),
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 20.sp
+        )
     }
-
 }
 
 @Composable
@@ -120,15 +123,15 @@ fun CartView(
 
     if (openAlertDialog.value) {
         AlertDialogView(
-            onDismissRequestText = "Cancel",
+            onDismissRequestText = stringResource(R.string.cancel),
             onDismissRequest = { openAlertDialog.value = false },
-            onConfirmationText = "Confirm",
+            onConfirmationText = stringResource(R.string.confirm),
             onConfirmation = {
                 removeAllFromCart()
                 openAlertDialog.value = false
             },
-            dialogTitle = "Remove all items?",
-            dialogText = "Are you sure you want to clear your cart?",
+            dialogTitle = stringResource(R.string.removeDialogTitle),
+            dialogText = stringResource(R.string.removeCartDialogText),
             icon = Icons.Default.Delete
         )
     }
@@ -140,7 +143,7 @@ fun CartView(
     ) {
         item {
             Text(
-                text = "Cart",
+                text = stringResource(R.string.cart),
                 fontSize = 20.sp,
                 textAlign = TextAlign.Center,
                 color = Color(0xFF222222),
@@ -159,7 +162,7 @@ fun CartView(
                     openAlertDialog.value = true
                 }) {
                     Text(
-                        text = "Remove All",
+                        text = stringResource(R.string.removeAll),
                         textAlign = TextAlign.End,
                         color = Color(0xFF838383),
                     )
@@ -281,13 +284,17 @@ fun PaymentSummaryView(products: List<CartEntity>) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
-            text = "Payment Summary", fontSize = 20.sp, fontWeight = FontWeight.Bold
+            text = stringResource(R.string.payment_summary),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
         )
         Row(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Subtotal", color = Color(0xFF838383), fontSize = 14.sp
+                text = stringResource(R.string.subtotal),
+                color = Color(0xFF838383),
+                fontSize = 14.sp
             )
             Text(
                 text = "$${totalPriceStr}", color = Color(0xFF838383), fontSize = 14.sp
@@ -297,10 +304,12 @@ fun PaymentSummaryView(products: List<CartEntity>) {
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Discount", color = Color(0xFF838383), fontSize = 14.sp
+                text = stringResource(R.string.discount),
+                color = Color(0xFF838383),
+                fontSize = 14.sp
             )
             Text(
-                text = "$${0}", color = Color(0xFF838383), fontSize = 14.sp
+                text = "$0", color = Color(0xFF838383), fontSize = 14.sp
             )
         }
 
@@ -310,7 +319,7 @@ fun PaymentSummaryView(products: List<CartEntity>) {
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Total Amount", fontWeight = FontWeight.ExtraBold
+                text = stringResource(R.string.total_amount), fontWeight = FontWeight.ExtraBold
             )
             Text(
                 text = "$${totalPriceStr}", fontWeight = FontWeight.ExtraBold
@@ -318,9 +327,7 @@ fun PaymentSummaryView(products: List<CartEntity>) {
         }
 
         Button(
-            onClick = {
-//                TODO()
-            },
+            onClick = { /* TODO: Handle Checkout */ },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
@@ -329,7 +336,7 @@ fun PaymentSummaryView(products: List<CartEntity>) {
             )
         ) {
             Text(
-                text = "Checkout",
+                text = stringResource(R.string.checkout),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
