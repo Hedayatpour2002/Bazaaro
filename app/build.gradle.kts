@@ -84,6 +84,8 @@ dependencies {
     // lottie
     implementation(libs.lottie.compose)
 
+    //appcompat
+    implementation(libs.androidx.appcompat)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
