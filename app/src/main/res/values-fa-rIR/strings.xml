@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">بازار</string>
+    <string name="app_name">بازارو</string>
     <string name="personalInformation">اطلاعات شخصی</string>
     <string name="language">زبان</string>
     <string name="orderHistory">تاریخچه سفارشات</string>
@@ -47,4 +47,6 @@
     <string name="try_again">دوباره تلاش کنید</string>
     <string name="home">خانه</string>
     <string name="category">دسته‌بندی</string>
+    <string name="B">بازارو</string>
+    <string name="azaaro" />
 </resources>

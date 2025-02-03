@@ -99,13 +99,13 @@ private fun MainView(
                         Row(verticalAlignment = Alignment.Bottom) {
 
                             Text(
-                                text = "B",
+                                text = stringResource(R.string.B),
                                 fontWeight = FontWeight.ExtraBold,
                                 fontSize = 24.sp,
                                 color = Color(0xFFDB3022),
                                 fontFamily = FontFamily.Serif
                             )
-                            Text(text = "azaaro", fontFamily = FontFamily.Monospace)
+                            Text(text = stringResource(R.string.azaaro), fontFamily = FontFamily.Monospace)
 
                         }
 
