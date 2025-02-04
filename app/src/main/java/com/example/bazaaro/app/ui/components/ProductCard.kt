@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -98,7 +99,7 @@ fun ProductCard(
         Spacer(Modifier.height(8.dp))
 
         Text(
-            text = title, color = Color(0xFF121111), fontSize = 14.sp, fontWeight = FontWeight.Bold
+            text = title, color = Color(0xFF121111), fontSize = 14.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis
         )
         Spacer(Modifier.height(4.dp))
 
