@@ -12,11 +12,4 @@ enum class Language(
         code = "fa",
         title = "پارسی",
     );
-
-
-    companion object {
-        fun fromCode(code: String): Language? {
-            return entries.find { it.code == code }
-        }
-    }
 }
