@@ -1,8 +1,10 @@
 package com.example.bazaaro.data.model
 
+import java.time.LocalDate
+
 data class Coupon(
     val discountPercentage: String,
-    val offerTitle: String,
+    val offerTitle: Int,
     val couponCode: String,
-    val daysRemaining: String
+    val expiryDate: LocalDate
 )

@@ -24,8 +24,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,38 +35,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.bazaaro.R
-import com.example.bazaaro.data.model.Coupon
-
+import com.example.bazaaro.presentation.cart.CartViewModel
 
 @Composable
-fun CouponBottomSheetContent(onApplyCoupon: () -> Unit) {
-    val fakeCouponList = remember {
-        listOf(
-            Coupon(
-                discountPercentage = "15",
-                offerTitle = "Summer Sale",
-                couponCode = "SUMMER15",
-                daysRemaining = "10 days remaining"
-            ), Coupon(
-                discountPercentage = "20",
-                offerTitle = "First Order Discount",
-                couponCode = "WELCOME20",
-                daysRemaining = "30 days remaining"
-            ), Coupon(
-                discountPercentage = "10",
-                offerTitle = "Loyalty Reward",
-                couponCode = "LOYALTY10",
-                daysRemaining = "7 days remaining"
-            )
-        )
-    }
-
-    val promoCodeInput = remember { mutableStateOf("") }
+fun CouponBottomSheetContent(cartViewModel: CartViewModel, onApplyCoupon: () -> Unit) {
+    val fakeCouponList = cartViewModel.fakeCouponList.collectAsStateWithLifecycle()
+    val couponCodeInput = cartViewModel.couponCodeInput.collectAsStateWithLifecycle().value
 
     LazyColumn(
         modifier = Modifier
@@ -101,9 +79,9 @@ fun CouponBottomSheetContent(onApplyCoupon: () -> Unit) {
                     Spacer(modifier = Modifier.width(16.dp))
 
                     OutlinedTextField(
-                        value = promoCodeInput.value,
+                        value = couponCodeInput,
                         onValueChange = {
-                            promoCodeInput.value = it
+                            cartViewModel.changeCouponCodeInput(it)
                         },
                         placeholder = {
                             Text(text = stringResource(R.string.enter_coupon_code))
@@ -145,12 +123,12 @@ fun CouponBottomSheetContent(onApplyCoupon: () -> Unit) {
             Text(text = stringResource(R.string.your_promo_codes), fontWeight = FontWeight.Bold)
             Spacer(Modifier.height(10.dp))
         }
-        items(fakeCouponList) { couponData ->
+        items(fakeCouponList.value) { couponData ->
             CouponCard(discountPercentage = couponData.discountPercentage,
                 offerTitle = couponData.offerTitle,
                 couponCode = couponData.couponCode,
-                daysRemaining = couponData.daysRemaining,
-                onApplyClick = { promoCodeInput.value = couponData.couponCode })
+                daysRemaining = cartViewModel.calculateDaysRemaining(couponData.expiryDate),
+                onApplyClick = { cartViewModel.changeCouponCodeInput(couponData.couponCode) })
         }
     }
 }
@@ -158,9 +136,9 @@ fun CouponBottomSheetContent(onApplyCoupon: () -> Unit) {
 @Composable
 fun CouponCard(
     discountPercentage: String,
-    offerTitle: String,
+    offerTitle: Int,
     couponCode: String,
-    daysRemaining: String,
+    daysRemaining: Long,
     onApplyClick: () -> Unit
 ) {
     val gradientBrush = Brush.linearGradient(
@@ -199,7 +177,7 @@ fun CouponCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(text = offerTitle, fontWeight = FontWeight.Bold)
+                Text(text = stringResource(offerTitle), fontWeight = FontWeight.Bold)
                 Text(text = couponCode, fontSize = 14.sp)
             }
             Column(
@@ -207,7 +185,13 @@ fun CouponCard(
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
-                    text = daysRemaining, color = Color(0xFF9B9B9B), fontSize = 12.sp
+                    text = when {
+                        daysRemaining > 0L -> "$daysRemaining " + stringResource(R.string.days_remaining)
+                        daysRemaining == 0L -> stringResource(R.string.expires_today)
+                        else -> {
+                            stringResource(R.string.expired)
+                        }
+                    }, color = Color(0xFF9B9B9B), fontSize = 12.sp
                 )
                 Button(
                     onClick = onApplyClick, colors = ButtonDefaults.buttonColors(

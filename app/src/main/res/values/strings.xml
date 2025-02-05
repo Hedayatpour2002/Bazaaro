@@ -52,4 +52,10 @@
     <string name="enter_coupon_code">Enter Coupon Code</string>
     <string name="your_promo_codes">Your Promo Codes</string>
     <string name="apply">Apply</string>
+    <string name="days_remaining">days remaining</string>
+    <string name="expires_today">Expires Today</string>
+    <string name="expired">Expired</string>
+    <string name="summer_sale">Summer Sale</string>
+    <string name="first_order_discount">First Order Discount</string>
+    <string name="loyalty_reward">Loyalty Reward</string>
 </resources>

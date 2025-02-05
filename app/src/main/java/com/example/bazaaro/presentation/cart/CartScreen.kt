@@ -45,6 +45,7 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel(), navController: Na
     when (val state = cartState.value) {
         CartState.Loading -> LoadingView()
         is CartState.Success -> CartView(products = state.products,
+            cartViewModel = cartViewModel,
             onIncrement = { cartViewModel.addToCart(it) },
             onDecrement = { cartViewModel.removeOrDecrementProduct(it) },
             removeAllFromCart = { cartViewModel.removeAllFromCart() },
@@ -87,6 +88,7 @@ fun EmptyListView() {
 
 @Composable
 fun CartView(
+    cartViewModel: CartViewModel,
     products: List<CartEntity>,
     onIncrement: (CartEntity) -> Unit,
     onDecrement: (CartEntity) -> Unit,
@@ -121,7 +123,7 @@ fun CartView(
                     removeFromCart = { removeFromCart(product) })
             }
             item {
-                PaymentSummaryView(products = products)
+                PaymentSummaryView(cartViewModel = cartViewModel, products = products)
             }
         }
     }

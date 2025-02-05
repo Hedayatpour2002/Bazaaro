@@ -39,7 +39,7 @@
     <string name="cart_empty">سبد خرید خالی است!</string>
     <string name="removeCartDialogText">آیا مطمئن هستید که می‌خواهید سبد خرید خود را پاک کنید؟</string>
     <string name="payment_summary">خلاصه پرداخت</string>
-    <string name="subtotal">مجموع فرعی</string>
+    <string name="subtotal">مجموع</string>
     <string name="discount">تخفیف</string>
     <string name="total_amount">مجموع نهایی</string>
     <string name="checkout">پرداخت</string>
@@ -53,4 +53,10 @@
     <string name="enter_coupon_code">کد تخفیف را وارد کنید</string>
     <string name="your_promo_codes">کدهای تخفیف شما</string>
     <string name="apply">به‌کارگیری</string>
+    <string name="days_remaining">روز باقی مانده</string>
+    <string name="expires_today">امروز منقضی می‌شود</string>
+    <string name="expired">منقضی شده</string>
+    <string name="summer_sale">فروش تابستانه</string>
+    <string name="first_order_discount">تخفیف اولین سفارش</string>
+    <string name="loyalty_reward">جایزه وفاداری</string>
 </resources>

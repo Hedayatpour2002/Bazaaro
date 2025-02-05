@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
@@ -42,24 +45,32 @@ import com.example.bazaaro.R
 import com.example.bazaaro.app.ui.components.DashedDivider
 import com.example.bazaaro.app.ui.components.ModalBottomSheetView
 import com.example.bazaaro.data.model.CartEntity
+import com.example.bazaaro.data.model.Coupon
+import com.example.bazaaro.presentation.cart.CartViewModel
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PaymentSummaryView(products: List<CartEntity>) {
+fun PaymentSummaryView(cartViewModel: CartViewModel, products: List<CartEntity>) {
+    val selectedCoupon by cartViewModel.selectedCoupon.collectAsStateWithLifecycle()
+
     val totalPrice = remember(products) {
         products.sumOf { it.price * it.quantity }
     }
     val totalPriceStr = "%.2f".format(totalPrice)
+
 
     val showBottomSheet = remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     ModalBottomSheetView(showBottomSheet = showBottomSheet, sheetState = sheetState) {
-        CouponBottomSheetContent {
+        CouponBottomSheetContent(cartViewModel = cartViewModel) {
             scope.launch { sheetState.hide() }.invokeOnCompletion {
+                cartViewModel.changeSelectedCoupon(
+                    cartViewModel.couponCodeInput.value
+                )
                 if (!sheetState.isVisible) {
                     showBottomSheet.value = false
                 }
@@ -67,15 +78,39 @@ fun PaymentSummaryView(products: List<CartEntity>) {
         }
     }
 
+    val discountAmount = remember(selectedCoupon, totalPrice) {
+        if (selectedCoupon != null) {
+            (totalPrice * (selectedCoupon!!.discountPercentage.toDouble() / 100))
+        } else {
+            0.0
+        }
+    }
+    val discountAmountStr = "%.2f".format(discountAmount)
 
-    PaymentSummaryContent(totalPriceStr = totalPriceStr,
+    val finalTotal = remember(totalPrice, discountAmount) {
+        totalPrice - discountAmount
+    }
+    val finalTotalStr = "%.2f".format(finalTotal)
+
+
+    PaymentSummaryContent(selectedCoupon = selectedCoupon,
+        totalPriceStr = totalPriceStr,
+        discountAmountStr = discountAmountStr,
+        finalTotalStr = finalTotalStr,
+        removeSelectedCoupon = { cartViewModel.changeSelectedCoupon("") },
         onCouponClick = { showBottomSheet.value = !showBottomSheet.value },
         onCheckoutClick = { /* TODO: Handle Checkout */ })
 }
 
 @Composable
 fun PaymentSummaryContent(
-    totalPriceStr: String, onCouponClick: () -> Unit, onCheckoutClick: () -> Unit
+    selectedCoupon: Coupon?,
+    totalPriceStr: String,
+    discountAmountStr: String,
+    finalTotalStr: String,
+    removeSelectedCoupon: () -> Unit,
+    onCouponClick: () -> Unit,
+    onCheckoutClick: () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -87,17 +122,23 @@ fun PaymentSummaryContent(
             fontWeight = FontWeight.Bold
         )
         SummaryRow(label = stringResource(R.string.subtotal), value = "$${totalPriceStr}")
-        SummaryRow(label = stringResource(R.string.discount), value = "$0")
+        SummaryRow(
+            label = stringResource(R.string.discount), value = "-$${discountAmountStr}"
+        )
 
         DashedDivider()
 
         SummaryRow(
             label = stringResource(R.string.total_amount),
-            value = "$${totalPriceStr}",
+            value = "$${finalTotalStr}",
             isTotal = true
         )
 
-        CouponButton(onClick = onCouponClick)
+        CouponButton(
+            selectedCouponCode = selectedCoupon?.couponCode,
+            removeSelectedCoupon = removeSelectedCoupon,
+            onClick = onCouponClick
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -128,7 +169,9 @@ fun SummaryRow(label: String, value: String, isTotal: Boolean = false) {
 }
 
 @Composable
-fun CouponButton(onClick: () -> Unit) {
+fun CouponButton(
+    selectedCouponCode: String?, removeSelectedCoupon: () -> Unit, onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -156,11 +199,24 @@ fun CouponButton(onClick: () -> Unit) {
                         .padding(end = 16.dp)
                 )
 
-                Text(
-                    text = stringResource(R.string.do_you_have_coupon_code),
-                    color = Color(0xFF838383),
-                    fontSize = 12.sp
-                )
+                if (selectedCouponCode != null) {
+                    Icon(Icons.Rounded.Delete,
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            removeSelectedCoupon()
+                        })
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = selectedCouponCode, color = Color(0xFF838383), fontSize = 12.sp
+                    )
+                } else {
+                    Text(
+                        text = stringResource(R.string.do_you_have_coupon_code),
+                        color = Color(0xFF838383),
+                        fontSize = 12.sp
+                    )
+                }
+
             }
 
             Icon(
