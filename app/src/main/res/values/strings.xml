@@ -48,4 +48,8 @@
     <string name="category">Category</string>
     <string name="B">B</string>
     <string name="azaaro">azaaro</string>
+    <string name="do_you_have_coupon_code">Do you have a Coupon Code?</string>
+    <string name="enter_coupon_code">Enter Coupon Code</string>
+    <string name="your_promo_codes">Your Promo Codes</string>
+    <string name="apply">Apply</string>
 </resources>

@@ -49,4 +49,8 @@
     <string name="category">دسته‌بندی</string>
     <string name="B">بازارو</string>
     <string name="azaaro" />
+    <string name="do_you_have_coupon_code">آیا کد تخفیف دارید؟</string>
+    <string name="enter_coupon_code">کد تخفیف را وارد کنید</string>
+    <string name="your_promo_codes">کدهای تخفیف شما</string>
+    <string name="apply">به‌کارگیری</string>
 </resources>
