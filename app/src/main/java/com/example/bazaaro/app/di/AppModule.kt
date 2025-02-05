@@ -2,7 +2,6 @@ package com.example.bazaaro.app.di
 
 import android.content.Context
 import androidx.room.Room
-import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.bazaaro.data.ApiService
 import com.example.bazaaro.data.BASE_URL
 import com.example.bazaaro.data.database.AppDatabase
@@ -32,8 +31,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor(ChuckerInterceptor(context)).build()
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder().build()
     }
 
     @Provides
