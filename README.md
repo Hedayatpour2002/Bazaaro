@@ -33,7 +33,7 @@ Bazaaro is an e-commerce Android application built using modern Android developm
 - **Error Recovery**: Graceful error states with retry capabilities 
 - **Lottie Animations**: Smooth loading states and micro-interactions  
 - **Multilingual Support**: In-app language change functionality for seamless user experience
-- **Per-App Language** Preferences: Android 13 (API 33) support for personalized app language settings
+- **Per-App Language Preferences**: Android 13 (API 33) support for personalized app language settings
 
 ---
 
